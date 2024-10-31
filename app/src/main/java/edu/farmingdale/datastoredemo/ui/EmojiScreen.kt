@@ -1,6 +1,8 @@
 package edu.farmingdale.datastoredemo.ui
 
+import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -130,17 +132,19 @@ fun EmojiReleaseLinearLayout(
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
-                shape = MaterialTheme.shapes.medium
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier
+                    .clickable {
+                        showToast(cntxt, "Emoji: $e") // Show toast on click
+                    }
             ) {
-                    Text(
-                        text = e, fontSize = 50.sp,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(dimensionResource(R.dimen.padding_medium)),
-                        textAlign = TextAlign.Center
-                    )
-
-
+                Text(
+                    text = e, fontSize = 50.sp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(dimensionResource(R.dimen.padding_medium)),
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }
@@ -151,6 +155,7 @@ fun EmojiReleaseGridLayout(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
+    val cntxt = LocalContext.current
     LazyVerticalGrid(
         modifier = modifier,
         columns = GridCells.Fixed(3),
@@ -166,7 +171,11 @@ fun EmojiReleaseGridLayout(
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
-                modifier = Modifier.height(110.dp),
+                modifier = Modifier
+                    .height(110.dp)
+                    .clickable {
+                        showToast(cntxt, "Emoji: $e") // Show toast on click
+                    },
                 shape = MaterialTheme.shapes.medium
             ) {
                 Text(
@@ -183,4 +192,9 @@ fun EmojiReleaseGridLayout(
             }
         }
     }
+}
+
+// Function to show a toast message
+private fun showToast(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
