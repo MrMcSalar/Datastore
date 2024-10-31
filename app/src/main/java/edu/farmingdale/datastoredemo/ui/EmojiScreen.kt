@@ -122,7 +122,7 @@ fun EmojiReleaseLinearLayout(
     LazyColumn(
         modifier = modifier,
         contentPadding = contentPadding,
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small)),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items(
             items = LocalEmojiData.EmojiList,
@@ -135,14 +135,15 @@ fun EmojiReleaseLinearLayout(
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier
                     .clickable {
-                        showToast(cntxt, "Emoji: $e") // Show toast on click
+                        val emojiName = LocalEmojiData.getEmojiName(e)
+                        showToast(cntxt, "Emoji: $emojiName") // Show emoji name on click
                     }
             ) {
                 Text(
                     text = e, fontSize = 50.sp,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(dimensionResource(R.dimen.padding_medium)),
+                        .padding(16.dp),
                     textAlign = TextAlign.Center
                 )
             }
@@ -160,8 +161,8 @@ fun EmojiReleaseGridLayout(
         modifier = modifier,
         columns = GridCells.Fixed(3),
         contentPadding = contentPadding,
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)),
-        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(
             items = LocalEmojiData.EmojiList,
@@ -174,19 +175,17 @@ fun EmojiReleaseGridLayout(
                 modifier = Modifier
                     .height(110.dp)
                     .clickable {
-                        showToast(cntxt, "Emoji: $e") // Show toast on click
+                        val emojiName = LocalEmojiData.getEmojiName(e)
+                        showToast(cntxt, "Emoji: $emojiName") // Show emoji name on click
                     },
                 shape = MaterialTheme.shapes.medium
             ) {
                 Text(
                     text = e, fontSize = 50.sp,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
                         .fillMaxHeight()
                         .wrapContentHeight(Alignment.CenterVertically)
-                        .padding(dimensionResource(R.dimen.padding_small))
-                        .align(Alignment.CenterHorizontally),
+                        .padding(8.dp),
                     textAlign = TextAlign.Center
                 )
             }
