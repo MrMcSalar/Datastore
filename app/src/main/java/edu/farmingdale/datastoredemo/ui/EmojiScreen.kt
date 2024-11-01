@@ -37,13 +37,10 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import edu.farmingdale.datastoredemo.R
-
 import edu.farmingdale.datastoredemo.data.local.LocalEmojiData
 
 /*
@@ -58,6 +55,7 @@ fun EmojiReleaseApp(
     EmojiScreen(
         uiState = emojiViewModel.uiState.collectAsState().value,
         selectLayout = emojiViewModel::selectLayout,
+        toggleTheme = emojiViewModel::toggleTheme // Pass toggleTheme to the EmojiScreen
     )
 }
 
@@ -65,9 +63,11 @@ fun EmojiReleaseApp(
 @Composable
 private fun EmojiScreen(
     uiState: EmojiReleaseUiState,
-    selectLayout: (Boolean) -> Unit
+    selectLayout: (Boolean) -> Unit,
+    toggleTheme: (Boolean) -> Unit // Include toggleTheme parameter
 ) {
     val isLinearLayout = uiState.isLinearLayout
+    val isDarkTheme = uiState.isDarkTheme
     Scaffold(
         topBar = {
             TopAppBar(
@@ -84,8 +84,15 @@ private fun EmojiScreen(
                             tint = MaterialTheme.colorScheme.onBackground
                         )
                     }
-
-
+                    // Add Switch for theme toggle
+                    Switch(
+                        checked = isDarkTheme,
+                        onCheckedChange = { toggleTheme(it) },
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = MaterialTheme.colorScheme.secondary,
+                            uncheckedThumbColor = MaterialTheme.colorScheme.onBackground
+                        )
+                    )
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.inversePrimary
@@ -197,3 +204,4 @@ fun EmojiReleaseGridLayout(
 private fun showToast(context: Context, message: String) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
+
