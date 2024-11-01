@@ -11,6 +11,7 @@ import edu.farmingdale.datastoredemo.EmojiReleaseApplication
 import edu.farmingdale.datastoredemo.data.local.UserPreferencesRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -20,10 +21,10 @@ class EmojiScreenViewModel(
 ) : ViewModel() {
     // UI states access for various
     val uiState: StateFlow<EmojiReleaseUiState> =
-        userPreferencesRepository.isLinearLayout.map { isLinearLayout ->
+        userPreferencesRepository.isLinearLayout.combine(userPreferencesRepository.isDarkTheme) { isLinearLayout, isDarkTheme ->
             EmojiReleaseUiState(
                 isLinearLayout = isLinearLayout,
-                isDarkTheme = userPreferencesRepository.isDarkTheme.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false).value
+                isDarkTheme = isDarkTheme
             )
         }.stateIn(
             scope = viewModelScope,
@@ -47,9 +48,10 @@ class EmojiScreenViewModel(
     /*
      * [toggleTheme] toggles the theme state and saves the preference in DataStore
      */
+
     fun toggleTheme(isDarkTheme: Boolean) {
         viewModelScope.launch {
-            userPreferencesRepository.saveThemePreference(isDarkTheme) // Make sure this method is implemented in your UserPreferencesRepository
+            userPreferencesRepository.saveThemePreference(isDarkTheme)
         }
     }
 

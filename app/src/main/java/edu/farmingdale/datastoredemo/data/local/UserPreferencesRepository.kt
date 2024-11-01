@@ -57,7 +57,7 @@ class UserPreferencesRepository(
 
     suspend fun saveThemePreference(isDarkTheme: Boolean) {
         dataStore.edit { preferences ->
-            preferences[PreferencesKeys.DARK_THEME] = isDarkTheme
+            preferences[IS_DARK_THEME] = isDarkTheme
         }
     }
 
